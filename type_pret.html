@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestion des types de prêt</title>
+  <link rel="stylesheet" href="ws/css/typepret.css" />
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">🏠 Accueil</a></li>
+        <li><a href="fonds.html">💰 Fonds</a></li>
+        <li><a href="type_pret.html" class="active">📄 Types de prêts</a></li>
+        <li><a href="pret.html">👤 Gestion de prêts</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Création de type de prêt</h1>
+    <form id="loan-type-form">
+      <label for="nom">Nom du type de prêt :</label>
+      <input type="text" id="nom" name="nom" placeholder="Entrez le nom du type de prêt" required />
+      
+      <label for="taux">Taux d'intérêt (%) :</label>
+      <input type="number" id="taux" name="taux" placeholder="Entrez le taux d'intérêt" step="0.01" required />
+      
+      <button type="submit">Ajouter Type de Prêt</button>
+    </form>
+
+    <section id="loan-types-list"></section>
+
+    <button class="back-button" onclick="window.location.href='index.html'">Retour à l'accueil</button>
+  </main>
+
+  <footer>
+    <p>Etablissement financier et prêt bancaire - Gestion des types de prêt</p>
+  </footer>
+
+  <script>
+    function chargerLoanTypes() {
+      fetch('/ws/type_pret')
+        .then(response => {
+          if (!response.ok) throw new Error(`Erreur réseau: ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          const list = document.getElementById('loan-types-list');
+          list.innerHTML = '<h2>Liste des types de prêt</h2>';
+          if (data.length === 0) {
+            list.innerHTML += '<p>Aucun type de prêt trouvé.</p>';
+            return;
+          }
+          let table = '<table><thead><tr><th>ID</th><th>Nom</th><th>Taux d\'intérêt (%)</th></tr></thead><tbody>';
+          data.forEach(type => {
+            table += `<tr><td>${type.id}</td><td>${type.nom}</td><td>${type.taux}</td></tr>`;
+          });
+          table += '</tbody></table>';
+          list.innerHTML += table;
+        })
+        .catch(error => {
+          console.error('Erreur lors du chargement des types de prêt:', error);
+          document.getElementById('loan-types-list').innerHTML = '<p>Erreur lors du chargement des types de prêt.</p>';
+        });
+    }
+
+    document.getElementById('loan-type-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const nom = document.getElementById('nom').value;
+      const interestRate = document.getElementById('taux').value;
+
+      fetch('/ws/type_pret', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom: nom, taux: interestRate })
+      })
+        .then(response => {
+          if (!response.ok) throw new Error(`Erreur réseau: ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          alert(data.message || 'Type de prêt ajouté avec succès');
+          document.getElementById('nom').value = '';
+          document.getElementById('taux').value = '';
+          chargerLoanTypes();
+        })
+        .catch(error => {
+          console.error('Erreur lors de l\'ajout du type de prêt:', error);
+          alert('Erreur lors de l\'ajout du type de prêt');
+        });
+    });
+
+    window.onload = function () {
+      chargerLoanTypes();
+    };
+  </script>
+</body>
+
+</html>

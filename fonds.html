@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CrediNova • Fonds</title>
+  <link rel="stylesheet" href="ws/css/fonds.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="logo">💼 CrediNova</div>
+    <nav class="main-nav">
+      <a href="index.html">🏠 Accueil</a>
+      <a href="fonds.html" class="active">💰 Fonds</a>
+      <a href="type_pret.html">📄 Types de prêts</a>
+      <a href="pret.html">👤 Gestion de prêts</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="form-section">
+      <h1>Ajouter un fond</h1>
+      <form id="ajout-fond-form" class="fond-form">
+        <div class="input-group">
+          <label for="description">Description</label>
+          <input type="text" id="description" name="description" placeholder="Ex: Investissement initial" maxlength="50">
+        </div>
+        <div class="input-group">
+          <label for="montant">Montant (€)</label>
+          <input type="number" id="montant" name="montant" placeholder="Ex: 10000.00" step="0.01" required>
+        </div>
+        <button type="submit">💾 Enregistrer</button>
+      </form>
+    </section>
+
+    <section id="liste-fonds" class="liste-fonds">
+      <!-- Liste dynamique des fonds -->
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 CrediNova • Module de gestion des fonds</p>
+  </footer>
+
+  <script>
+    function chargerFonds() {
+      fetch('/ws/fonds')
+        .then(response => {
+          if (!response.ok) throw new Error(`Erreur réseau: ${response.status}`);
+          return response.text().then(text => JSON.parse(text));
+        })
+        .then(data => {
+          const liste = document.getElementById('liste-fonds');
+          liste.innerHTML = '<h2>📋 Fonds enregistrés</h2>';
+          if (data.length === 0) {
+            liste.innerHTML += '<p>Aucun fond enregistré pour le moment.</p>';
+            return;
+          }
+          let table = '<table><thead><tr><th>ID</th><th>Description</th><th>Montant (€)</th><th>Date d\'ajout</th></tr></thead><tbody>';
+          data.forEach(fond => {
+            table += `<tr><td>${fond.id}</td><td>${fond.description || '—'}</td><td>${fond.montant}</td><td>${fond.date_ajout}</td></tr>`;
+          });
+          table += '</tbody></table>';
+          liste.innerHTML += table;
+        })
+        .catch(error => console.error('Erreur lors du chargement des fonds:', error));
+    }
+
+    document.getElementById('ajout-fond-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const description = document.getElementById('description').value;
+      const montant = document.getElementById('montant').value;
+
+      fetch('/ws/fonds', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description, montant })
+      })
+        .then(response => {
+          if (!response.ok) throw new Error(`Erreur réseau: ${response.status}`);
+          return response.text().then(text => JSON.parse(text));
+        })
+        .then(data => {
+          alert(data.message || 'Fond ajouté avec succès');
+          document.getElementById('ajout-fond-form').reset();
+          chargerFonds();
+        })
+        .catch(error => console.error('Erreur lors de l\'ajout du fond:', error));
+    });
+
+    window.onload = chargerFonds;
+  </script>
+</body>
+
+</html>

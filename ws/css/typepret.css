@@ -1,0 +1,189 @@
+/* Reset minimal */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body et base */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #eef2f3, #8e9eab);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Header & Nav */
+  header nav {
+    background-color: #2c3e50;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  header nav ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-weight: 600;
+    padding-bottom: 3px;
+    display: inline-block;
+    transition: color 0.3s ease;
+  }
+  
+  header nav ul li a:hover,
+  header nav ul li a.active {
+    color: #1abc9c;
+    border-bottom: 2px solid #1abc9c;
+  }
+  
+  /* Main container */
+  main {
+    max-width: 700px;
+    margin: 2rem auto 3rem;
+    padding: 2rem;
+    background: #ffffffd1;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(44, 62, 80, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    font-weight: 700;
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  /* Formulaire */
+  form#loan-type-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  form#loan-type-form label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  form#loan-type-form input[type="text"],
+  form#loan-type-form input[type="number"] {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+  }
+  
+  form#loan-type-form input[type="text"]:focus,
+  form#loan-type-form input[type="number"]:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px #1abc9caa;
+  }
+  
+  /* Bouton soumettre */
+  form#loan-type-form button[type="submit"] {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+  }
+  
+  form#loan-type-form button[type="submit"]:hover {
+    background-color: #16a085;
+  }
+  
+  /* Section liste des types de prêt */
+  #loan-types-list h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #1abc9c;
+    padding-bottom: 4px;
+    text-align: center;
+  }
+  
+  #loan-types-list p {
+    font-style: italic;
+    color: #555;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  #loan-types-list table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+    box-shadow: 0 0 8px rgba(44, 62, 80, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  #loan-types-list thead {
+    background-color: #1abc9c;
+    color: white;
+  }
+  
+  #loan-types-list th,
+  #loan-types-list td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  #loan-types-list tbody tr:nth-child(even) {
+    background-color: #f0f8f8;
+  }
+  
+  #loan-types-list tbody tr:hover {
+    background-color: #d1f0e5;
+    cursor: default;
+  }
+  
+  /* Bouton retour */
+  .back-button {
+    background: none;
+    border: 2px solid #1abc9c;
+    color: #1abc9c;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: max-content;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .back-button:hover {
+    background-color: #1abc9c;
+    color: white;
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: auto;
+    padding: 1.5rem 0;
+    background-color: #f9f9f9;
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.05);
+  }
+  
