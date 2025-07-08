@@ -1,0 +1,185 @@
+/* interet.css — Inspiré de fonds.css */
+
+/* RESET ET BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #eef2f3, #8e9eab);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* HEADER */
+  .header {
+    background-color: #2c3e50;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .main-nav a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .main-nav a:hover {
+    color: #1abc9c;
+  }
+  
+  .main-nav a.active {
+    color: #1abc9c;
+    border-bottom: 2px solid #1abc9c;
+    padding-bottom: 2px;
+  }
+  
+  /* TITRE */
+  h1 {
+    text-align: center;
+    margin: 2rem 0 1rem;
+    font-size: 2rem;
+    color: #2c3e50;
+  }
+  
+  /* FILTRES */
+  .filters {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    padding: 1rem 2rem;
+    background: #ffffffd1;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(44, 62, 80, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .filters label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .filters input[type="month"] {
+    padding: 0.5rem;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .filters input[type="month"]:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px #1abc9c99;
+  }
+  
+  .filters button {
+    background-color: #1abc9c;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .filters button:hover {
+    background-color: #16a085;
+  }
+  
+  /* CONTENU */
+  .results {
+    max-width: 1000px;
+    margin: 0 auto 3rem;
+    padding: 2rem;
+    background: #ffffffd1;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(44, 62, 80, 0.15);
+  }
+  
+  .results h2 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #1abc9c;
+    padding-bottom: 4px;
+    font-weight: 700;
+  }
+  
+  /* TABLEAU */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 8px rgba(44, 62, 80, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 1rem;
+  }
+  
+  thead {
+    background-color: #1abc9c;
+    color: white;
+  }
+  
+  th, td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f0f8f8;
+  }
+  
+  tbody tr:hover {
+    background-color: #d1f0e5;
+  }
+  
+  /* GRAPHIQUE */
+  canvas {
+    display: block;
+    margin: 2rem auto;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* MESSAGE D'ERREUR */
+  .error {
+    color: red;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+  
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    font-size: 0.9rem;
+    margin-top: auto;
+  }
+  

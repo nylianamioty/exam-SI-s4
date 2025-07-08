@@ -16,6 +16,8 @@
         <li><a href="fonds.html">💰 Fonds</a></li>
         <li><a href="type_pret.html">📄 Types de prêts</a></li>
         <li><a href="pret.html" class="active">👤 Gestion de prêts</a></li>
+        <li><a href="interets_mensuels.html">Intérêts mensuels</a></li>
+        <li><a href="remboursement.html">Remboursement</a></li>
       </ul>
     </nav>
   </header>
@@ -90,7 +92,7 @@
           }
           let table = '<table><thead><tr><th>Client</th><th>Type de prêt</th><th>Type de fond</th><th>Montant</th><th>Date de début</th><th>Date de fin</th><th>Statut</th></tr></thead><tbody>';
           data.forEach(loan => {
-            table += `<tr><td>${loan.client_id}</td><td>${loan.loan_type_id}</td><td>${loan.fond_id}</td><td>${loan.amount}</td><td>${loan.start_date}</td><td>${loan.end_date || ''}</td><td>${loan.status}</td></tr>`;
+            table += `<tr><td>${loan.client_id}</td><td>${loan.type_pret_id}</td><td>${loan.fond_id}</td><td>${loan.amount}</td><td>${loan.start_date}</td><td>${loan.end_date || ''}</td><td>${loan.status}</td></tr>`;
           });
           table += '</tbody></table>';
           list.innerHTML += table;
@@ -116,7 +118,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           client_id: clientId,
-          loan_type_id: loanTypeId,
+          type_pret_id: loanTypeId,
           fond_id: fondId,
           amount: amount,
           start_date: startDate,

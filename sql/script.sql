@@ -37,6 +37,26 @@ CREATE TABLE IF NOT EXISTS pret (
     status VARCHAR(50) DEFAULT 'active',
     FOREIGN KEY (fond_id) REFERENCES fonds(id)
 );
+CREATE TABLE IF NOT EXISTS calculs_interets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    periode CHAR(7) NOT NULL,  -- Format YYYY-MM
+    interet_total DECIMAL(12,2) NOT NULL,
+    date_calcul TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE VIEW interets_mensuels AS
+SELECT 
+    DATE_FORMAT(p.start_date, '%Y-%m') AS periode,
+    SUM(p.amount * tp.taux / 100 / 12) AS interet_mensuel,
+    COUNT(p.id) AS nombre_prets,
+    SUM(p.amount) AS montant_total
+FROM 
+    pret p
+JOIN 
+    type_pret tp ON p.type_pret_id = tp.id
+WHERE 
+    p.status = 'active'
+GROUP BY 
+    DATE_FORMAT(p.start_date, '%Y-%m');
 
 -- Donnees
 -- Client
