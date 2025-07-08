@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Remboursement</title>
+  <link rel="stylesheet" href="ws/css/remboursement.css">
+</head>
+<body>
+    <header>
+        <nav>
+          <ul>
+            <li><a href="index.html">🏠 Accueil</a></li>
+            <li><a href="fonds.html">💰 Fonds</a></li>
+            <li><a href="type_pret.html">📄 Types de prêts</a></li>
+            <li><a href="pret.html">👤 Gestion de prêts</a></li>
+            <li><a href="interets_mensuels.html">Intérêts mensuels</a></li>
+            <li><a href="remboursement.html" class="active">Remboursement</a></li>
+          </ul>
+        </nav>
+    </header>
+  <h1>Système de remboursement</h1>
+  <form id="amortissement-form">
+    <label for="montant">Montant prêt:</label>
+    <input type="number" id="montant" required>
+    <label for="taux">Taux d'intérêt annuel:</label>
+    <input type="number" id="taux" step="0.01" required>
+    <label for="duree">Durée (mois):</label>
+    <input type="number" id="duree" required>
+    <label for="assurance">Taux d'assurance (% du capital):</label>
+    <input type="number" id="assurance" step="0.01" value="0">
+    <button type="submit">Calculer</button>
+  </form>
+  <div id="result"></div>
+  <button onclick="window.location.href='index.html'">Retour à l'accueil</button>
+  <script>
+    document.getElementById('amortissement-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const montant = parseFloat(document.getElementById('montant').value);
+      const taux = parseFloat(document.getElementById('taux').value) / 100 / 12;
+      const duree = parseInt(document.getElementById('duree').value);
+      const tauxAssurance = parseFloat(document.getElementById('assurance').value) / 100;
+      if (isNaN(montant) || isNaN(taux) || isNaN(duree) || isNaN(tauxAssurance) || montant <= 0 || taux < 0 || duree <= 0 || tauxAssurance < 0) {
+        document.getElementById('result').innerHTML = "<p style='color:red'>Veuillez saisir des valeurs valides.</p>";
+        return;
+      }
+      const annuite = taux === 0 ? montant / duree : montant * taux / (1 - Math.pow(1 + taux, -duree));
+      const assuranceMensuelle = montant * tauxAssurance / 12;
+      let capitalRestant = montant;
+      let html = '<table><tr><th>Mois</th><th>Mensualité</th><th>Assurance</th><th>Total à payer</th><th>Intérêts</th><th>Capital remboursé</th><th>Capital restant</th></tr>';
+      for(let i=1; i<=duree; i++) {
+        const interet = capitalRestant * taux;
+        const capital = annuite - interet;
+        capitalRestant -= capital;
+        html += `<tr>
+          <td>${i}</td>
+          <td>${annuite.toFixed(2)}</td>
+          <td>${assuranceMensuelle.toFixed(2)}</td>
+          <td>${(annuite + assuranceMensuelle).toFixed(2)}</td>
+          <td>${interet.toFixed(2)}</td>
+          <td>${capital.toFixed(2)}</td>
+          <td>${capitalRestant > 0 ? capitalRestant.toFixed(2) : '0.00'}</td>
+        </tr>`;
+      }
+      html += '</table>';
+      document.getElementById('result').innerHTML = html;
+    });
+  </script>
+</body>
+<footer>
+  <p>Etablissement financier - Simulation d'amortissement</p>
+</footer>
+</html>

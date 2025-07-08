@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Intérêts mensuels - EF</title>
+    <link rel="stylesheet" href="ws/css/interet.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html">🏠 Accueil</a></li>
+            <li><a href="fonds.html">💰 Fonds</a></li>
+            <li><a href="type_pret.html">📄 Types de prêts</a></li>
+            <li><a href="pret.html">👤 Gestion de prêts</a></li>
+            <li><a href="interets_mensuels.html" class="active">Intérêts mensuels</a></li>
+            <li><a href="remboursement.html">Remboursement</a></li>
+          </ul>
+        </nav>
+      </header>
+
+    <h1>Intérêts mensuels gagnés</h1>
+
+    <div class="filters">
+        <label for="start-month">Période de début :</label>
+        <input type="month" id="start-month" name="start-month">
+
+        <label for="end-month">Période de fin :</label>
+        <input type="month" id="end-month" name="end-month">
+
+        <button id="apply-filters">Appliquer</button>
+    </div>
+
+    <div class="results">
+        <h2>Tableau des intérêts</h2>
+        <div id="interest-table"></div>
+
+        <h2>Graphique des intérêts</h2>
+        <canvas id="interest-chart" width="800" height="400"></canvas>
+    </div>
+
+    <script>
+        let interestChart;
+
+        function loadInterests(start = null, end = null) {
+            fetch('/ws/interets_mensuels' + (start || end ? `?start=${start || ''}&end=${end || ''}` : ''))
+                .then(response => {
+                    if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data || !data.table_data) {
+                        throw new Error('Format de données invalide');
+                    }
+
+                    renderTable(data.table_data);
+                    renderChart(data.chart_data);
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    document.getElementById('interest-table').innerHTML =
+                        '<p class="error">Erreur lors du chargement des données</p>';
+                });
+        }
+
+        function renderTable(data) {
+            const tableDiv = document.getElementById('interest-table');
+
+            if (!Array.isArray(data) || data.length === 0) {
+                tableDiv.innerHTML = '<p>Aucune donnée disponible pour cette période</p>';
+                return;
+            }
+
+            let html = '<table><thead><tr>';
+            html += '<th>Période</th>';
+            html += '<th>Intérêts mensuels</th>';
+            html += '<th>Nombre de prêts</th>';
+            html += '<th>Montant total</th>';
+            html += '</tr></thead><tbody>';
+
+            data.forEach(row => {
+                html += `<tr>
+                    <td>${row.periode}</td>
+                    <td>${parseFloat(row.interet_mensuel).toFixed(2)}</td>
+                    <td>${row.nombre_prets}</td>
+                    <td>${parseFloat(row.montant_total).toFixed(2)}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            tableDiv.innerHTML = html;
+        }
+
+        function renderChart(chartData) {
+            const ctx = document.getElementById('interest-chart').getContext('2d');
+
+            if (interestChart) {
+                interestChart.destroy();
+            }
+
+            interestChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Montant '
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Mois/Année'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('apply-filters').addEventListener('click', function () {
+            const start = document.getElementById('start-month').value;
+            const end = document.getElementById('end-month').value;
+            loadInterests(start, end);
+        });
+
+        window.onload = function () {
+            loadInterests();
+        };
+    </script>
+</body>
+
+<footer>
+    <p>Etablissement financier et prêt bancaire - Gestion des fonds</p>
+</footer>
+</html>
